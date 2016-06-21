@@ -1,9 +1,10 @@
-//
-// Copyright (C) Philip Schlump, 2013-2015.
-// Version: 1.0.3
-// Tested on Mon Sep  7 21:05:15 MDT 2015
-//
 package filelib
+
+//
+// Copyright (C) Philip Schlump, 2013-2016.
+// Version: 1.0.3
+// Tested on Mon Jun 20 18:06:52 MDT 2016
+//
 
 import (
 	"fmt"
@@ -14,6 +15,7 @@ import (
 	"strings"
 )
 
+// SearchPathApp searches a set of paths for a particular file.
 func SearchPathApp(rawFileName string, appName string, searchPath string) (fullFileName string, ok bool) {
 
 	hostname, err := os.Hostname()
@@ -43,7 +45,7 @@ func SearchPathApp(rawFileName string, appName string, searchPath string) (fullF
 
 	sp := strings.Split(searchPath, string(os.PathListSeparator))
 	ok = false
-	tmpl_arr := []string{
+	tmplArr := []string{
 		"%{CUR_PATH%}%{OS_SEP%}%{FILENAME%}-%{AppName%}-%{HostName%}%{FILEEXT%}",
 		"%{CUR_PATH%}%{OS_SEP%}%{FILENAME%}-%{AppName%}%{FILEEXT%}",
 		"%{CUR_PATH%}%{OS_SEP%}%{FILENAME%}-%{HostName%}%{FILEEXT%}",
@@ -53,7 +55,7 @@ func SearchPathApp(rawFileName string, appName string, searchPath string) (fullF
 	for _, p := range sp {
 		mdata["CUR_PATH"] = p
 
-		for _, tmpl := range tmpl_arr {
+		for _, tmpl := range tmplArr {
 			fullFileName = Qt(tmpl, mdata)
 			fullFileName, _ = SubstitueUserInFilePath(fullFileName, mdata)
 			fullFileName = Qt(fullFileName, mdata)
@@ -72,6 +74,7 @@ func SearchPathApp(rawFileName string, appName string, searchPath string) (fullF
 	return
 }
 
+// RmExt remove the extension from a file name and returns the name.
 func RmExt(filename string) string {
 	var extension = filepath.Ext(filename)
 	var name = filename[0 : len(filename)-len(extension)]
@@ -94,6 +97,7 @@ func init() {
 	homeDir = os.Getenv("HOME")
 }
 
+// SubstitueUserInFilePath looks up the user and replaces '~' or '~name' whith the home direcotry
 func SubstitueUserInFilePath(s string, mdata map[string]string) (rs string, has bool) {
 	has = false
 	x := hasUserPat.FindStringSubmatch(s)

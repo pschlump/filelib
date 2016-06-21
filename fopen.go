@@ -5,9 +5,9 @@ import (
 	"os"
 )
 
-var invalidMode = errors.New("Invalid Mode")
+var errInvalidMode = errors.New("Invalid Mode")
 
-// Open a file with a mode string - similar to C fopen
+// Fopen opens a file with a mode string - similar to C fopen
 func Fopen(fn string, mode string) (file *os.File, err error) {
 	file = nil
 	if mode == "r" {
@@ -20,7 +20,7 @@ func Fopen(fn string, mode string) (file *os.File, err error) {
 			file, err = os.OpenFile(fn, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
 		}
 	} else {
-		err = invalidMode
+		err = errInvalidMode
 	}
 	return
 }

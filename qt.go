@@ -11,7 +11,7 @@ func init() {
 	qtRegEx = regexp.MustCompile("%{([A-Za-z0-9_]*)%}")
 }
 
-// QT: Quick template
+// Qt is a string quick template.
 // %{name%} gets replace with substitution from map if it is in map, else ""
 func Qt(format string, data map[string]string) string {
 	// re := regexp.MustCompile("%{([A-Za-z0-9_]*)%}")
@@ -20,6 +20,7 @@ func Qt(format string, data map[string]string) string {
 	}))
 }
 
+// QtR is a string quick template.  It uses the same format as Qt but you get to pass a map[string]interface{}
 func QtR(format string, data map[string]interface{}) string {
 	return string(qtRegEx.ReplaceAllFunc([]byte(format), func(s []byte) []byte {
 		t := string(s[2 : len(s)-2])
@@ -31,7 +32,7 @@ func QtR(format string, data map[string]interface{}) string {
 		case string:
 			return []byte(u.(string))
 		default:
-			sb := fmt.Sprintf("%v", u)
+			sb := fmt.Sprintf("%s", u)
 			return []byte(sb)
 		}
 	}))
