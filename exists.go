@@ -83,3 +83,16 @@ func CleanupOldFiles(dir string, dt time.Duration) {
 	// duration := time.Since(then)
 	// fmt.Println(duration.Hours())
 }
+
+func ExistsIsDir(name string) bool {
+	fi, err := os.Stat(name)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+	}
+	if fi.IsDir() {
+		return true
+	}
+	return false
+}
