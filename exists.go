@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -84,6 +85,7 @@ func CleanupOldFiles(dir string, dt time.Duration) {
 	// fmt.Println(duration.Hours())
 }
 
+// ExistsIsDir returns true if the directory exists.
 func ExistsIsDir(name string) bool {
 	fi, err := os.Stat(name)
 	if err != nil {
@@ -96,3 +98,52 @@ func ExistsIsDir(name string) bool {
 	}
 	return false
 }
+
+// InArray returns true if `lookFor` is found in `inArr`.
+func InArray(lookFor string, inArr []string) bool {
+	for _, v := range inArr {
+		if lookFor == v {
+			return true
+		}
+	}
+	return false
+}
+
+// InArrayN returns the position if `lookFor` is found in `inArr`, else -1.
+func InArrayN(lookFor string, inArr []string) int {
+	for i, v := range inArr {
+		if lookFor == v {
+			return i
+		}
+	}
+	return -1
+}
+
+func FilterArray(re string, inArr []string) (outArr []string) {
+	var validID = regexp.MustCompile(re)
+
+	outArr = make([]string, 0, len(inArr))
+	for k := range inArr {
+		if validID.MatchString(inArr[k]) {
+			outArr = append(outArr, inArr[k])
+		}
+	}
+	// fmt.Printf ( "output = %v\n", outArr )
+	return
+}
+
+func AllFiles(path, match string) (fns, dirs []string) {
+	fns, dirs = GetFilenames(path)
+	fns = FilterArray(match, fns)
+	// xyzzy400 - redursive
+	for _, aDir := range dirs {
+		tFn, tDir := AllFiles(path+"/"+aDir, match)
+		for _, x := range tFn {
+			fns = append(fns, aDir+"/"+x)
+		}
+		_ = tDir
+	}
+	return
+}
+
+/* vim: set noai ts=4 sw=4: */
