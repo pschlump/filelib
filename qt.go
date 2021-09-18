@@ -32,7 +32,7 @@ func QtR(format string, data map[string]interface{}) string {
 		case string:
 			return []byte(u.(string))
 		default:
-			sb := fmt.Sprintf("%s", u)
+			sb := fmt.Sprintf("%v", u)
 			return []byte(sb)
 		}
 	}))
