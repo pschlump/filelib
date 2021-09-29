@@ -120,3 +120,5 @@ func SubstitueUserInFilePath(s string, mdata map[string]string) (rs string, has 
 	}
 	return
 }
+
+/* vim: set noai ts=4 sw=4: */

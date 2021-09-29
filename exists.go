@@ -119,6 +119,16 @@ func InArrayN(lookFor string, inArr []string) int {
 	return -1
 }
 
+// InArrayInt returns true if the interger lookFor isfound in the int slice inArr.
+func InArrayInt(lookFor int, inArr []int) bool {
+	for _, v := range inArr {
+		if lookFor == v {
+			return true
+		}
+	}
+	return false
+}
+
 func FilterArray(re string, inArr []string) (outArr []string) {
 	var validID = regexp.MustCompile(re)
 
