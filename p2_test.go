@@ -25,3 +25,17 @@ func Test_AllFiles(t *testing.T) {
 		}
 	}
 }
+
+func Test_ListFilesAndRemoveItem(t *testing.T) {
+	fns, dirs := GetFilenames("./test_data_2")
+	if len(fns) != 3 {
+		t.Errorf("Error, Invalid Length expected 3 got %d\n", len(fns))
+	}
+	if len(dirs) != 1 {
+		t.Errorf("Error, Invalid Length expected 1 got %d\n", len(dirs))
+	}
+	fns = RemoveMatch("^bbb.bbb$", fns)
+	if len(fns) != 2 {
+		t.Errorf("Error, Invalid Length expected 2 got %d\n", len(fns))
+	}
+}

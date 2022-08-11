@@ -142,6 +142,19 @@ func FilterArray(re string, inArr []string) (outArr []string) {
 	return
 }
 
+func RemoveMatch(re string, inArr []string) (outArr []string) {
+	var validID = regexp.MustCompile(re)
+
+	outArr = make([]string, 0, len(inArr))
+	for k := range inArr {
+		if !validID.MatchString(inArr[k]) {
+			outArr = append(outArr, inArr[k])
+		}
+	}
+	// fmt.Printf ( "output = %v\n", outArr )
+	return
+}
+
 func AllFiles(path, match string) (fns, dirs []string) {
 	fns, dirs = GetFilenames(path)
 	fns = FilterArray(match, fns)
