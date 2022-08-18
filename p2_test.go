@@ -39,3 +39,5 @@ func Test_ListFilesAndRemoveItem(t *testing.T) {
 		t.Errorf("Error, Invalid Length expected 2 got %d\n", len(fns))
 	}
 }
+
+/* vim: set noai ts=4 sw=4: */

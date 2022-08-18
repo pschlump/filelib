@@ -24,3 +24,5 @@ func Fopen(fn string, mode string) (file *os.File, err error) {
 	}
 	return
 }
+
+/* vim: set noai ts=4 sw=4: */

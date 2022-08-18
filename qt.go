@@ -37,3 +37,5 @@ func QtR(format string, data map[string]interface{}) string {
 		}
 	}))
 }
+
+/* vim: set noai ts=4 sw=4: */

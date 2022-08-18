@@ -29,3 +29,5 @@ func Test_Exists(t *testing.T) {
 func Test_CleanupOldFiles(t *testing.T) {
 	CleanupOldFiles("./test-cleanup", time.Duration(30)*time.Second)
 }
+
+/* vim: set noai ts=4 sw=4: */
