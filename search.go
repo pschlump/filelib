@@ -121,4 +121,20 @@ func SubstitueUserInFilePath(s string, mdata map[string]string) (rs string, has 
 	return
 }
 
+// InPatternArray seqrches a set of regular expression patterns in 'pat' and sees if any match.
+// -1 is returned if no match.
+func InPatternArray(s string, pat []string) (rv int, err error) {
+	rv = -1
+	var re *regexp.Regexp
+	for ii, vv := range pat {
+		if re, err = regexp.Compile(vv); err != nil {
+			return
+		}
+		if re.MatchString(s) {
+			return ii, nil
+		}
+	}
+	return
+}
+
 /* vim: set noai ts=4 sw=4: */
