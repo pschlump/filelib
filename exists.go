@@ -1,8 +1,6 @@
-//
 // Copyright (C) Philip Schlump, 2013-2016.
 // Version: 1.0.3
 // Tested on Mon Jun 20 18:01:48 MDT 2016
-//
 package filelib
 
 import (
@@ -10,7 +8,6 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
-	"strings"
 	"time"
 )
 
@@ -24,14 +21,17 @@ func Exists(name string) bool {
 	return true
 }
 
-// GetFilenames gets a list of file names and directorys.
+// GetFilenames gets a list of file names and directories.  The directories '.' and '..' are removed.
+// Other '.[.]?.*' fiels and directories are included.
 func GetFilenames(dir string) (filenames, dirs []string) {
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		return nil, nil
 	}
 	for _, fstat := range files {
-		if !strings.HasPrefix(string(fstat.Name()), ".") {
+		// if !strings.HasPrefix(string(fstat.Name()), ".") {
+		fn := string(fstat.Name())
+		if !(fn == "." || fn == "..") { // Remove . and ..
 			if fstat.IsDir() {
 				dirs = append(dirs, fstat.Name())
 			} else {
@@ -50,7 +50,9 @@ func ApplyFilenames(dir string, fx ApplyFilenamesFunc) (filenames, dirs []string
 		return nil, nil
 	}
 	for _, fstat := range files {
-		if !strings.HasPrefix(string(fstat.Name()), ".") {
+		// if !strings.HasPrefix(string(fstat.Name()), ".") {
+		fn := string(fstat.Name())
+		if !(fn == "." || fn == "..") { // Remove . and ..
 			if fstat.IsDir() {
 				dirs = append(dirs, fstat.Name())
 				fx("dir", fstat.Name(), fstat)
@@ -155,10 +157,14 @@ func RemoveMatch(re string, inArr []string) (outArr []string) {
 	return
 }
 
+// AllFiles returns a recursive list of all files (excluding all directories).
+// Empty directories will be eliminated.  Passing an empty string for match will
+// return all files, but faster, skiping the regular expression pattern match.
 func AllFiles(path, match string) (fns, dirs []string) {
 	fns, dirs = GetFilenames(path)
-	fns = FilterArray(match, fns)
-	// xyzzy400 - redursive
+	if fns != "" {
+		fns = FilterArray(match, fns)
+	}
 	for _, aDir := range dirs {
 		tFn, tDir := AllFiles(path+"/"+aDir, match)
 		for _, x := range tFn {
