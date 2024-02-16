@@ -162,7 +162,7 @@ func RemoveMatch(re string, inArr []string) (outArr []string) {
 // return all files, but faster, skiping the regular expression pattern match.
 func AllFiles(path, match string) (fns, dirs []string) {
 	fns, dirs = GetFilenames(path)
-	if fns != "" {
+	if match != "" {
 		fns = FilterArray(match, fns)
 	}
 	for _, aDir := range dirs {
